@@ -27,3 +27,22 @@ HOME_URL="https://amazonlinux.com/"`
 		t.Errorf("Invalid namespace: %v", ns.Name)
 	}
 }
+
+func Test_OE(t *testing.T) {
+	osr := `NAME="openEuler"
+VERSION="22.03 LTS"
+ID="openEuler"
+VERSION_ID="22.03"
+PRETTY_NAME="openEuler 22.03 LTS"
+ANSI_COLOR="0;31"`
+
+	data := map[string]*detectors.FeatureFile{
+		"etc/os-release": &detectors.FeatureFile{Data: []byte(osr)},
+	}
+
+	var d OsReleaseNamespaceDetector
+	ns := d.Detect(data)
+	if ns.Name != "openEuler:22.03" {
+		t.Errorf("Invalid namespace: %v", ns.Name)
+	}
+}
